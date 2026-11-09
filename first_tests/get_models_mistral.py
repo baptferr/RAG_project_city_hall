@@ -8,5 +8,5 @@ client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 models_list = client.models.list()
 
 # Affichage des identifiants des modèles disponibles
-for model in models_list.data:
-    print(model.id)
+for model in (models_list.data if models_list and models_list.data else []):
+    print(model.id) # type: ignore

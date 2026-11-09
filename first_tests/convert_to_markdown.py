@@ -1,9 +1,9 @@
 import os;
 from docling.document_converter import DocumentConverter as DC
-from first_tests.config import INPUTS_ORIGINAL_DIR, INPUTS_MARKDOWNBIS_DIR
+from first_tests.config import INPUTS_ORIGINAL_DIR, INPUTS_MARKDOWN_DIR
 
 input_path = INPUTS_ORIGINAL_DIR
-input_path_markdown = INPUTS_MARKDOWNBIS_DIR
+input_path_markdown = INPUTS_MARKDOWN_DIR
 converter = DC()    
 
 for folder in os.listdir(input_path):

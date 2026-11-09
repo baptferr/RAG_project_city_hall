@@ -1,5 +1,4 @@
 from mistralai.client import Mistral
-# from mistralai.models.chat_completion import ChatMessage
 import os
 from dotenv import load_dotenv
 import faiss
