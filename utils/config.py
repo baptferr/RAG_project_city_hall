@@ -15,7 +15,7 @@ EMBEDDING_MODEL = "mistral-embed"
 CHAT_MODEL = "mistral-small-latest"
 
 # Configuration de l'Indexation
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 INPUTS_ORIGINAL_DIR = PROJECT_ROOT / "inputs_original"
 INPUTS_MARKDOWN_DIR = PROJECT_ROOT / "inputs_markdown"
 # INPUT_DIR = "inputs"                # Dossier pour les données sources après extraction
