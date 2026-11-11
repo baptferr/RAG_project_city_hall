@@ -2,6 +2,12 @@
 import streamlit as st
 from mistralai.client import Mistral
 from mistralai.client.models import SystemMessage, UserMessage
+from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+from mistral_common.protocol.instruct.request import ChatCompletionRequest
+from mistral_common.protocol.instruct.messages import (
+    SystemMessage as TokenSystemMessage,
+    UserMessage as TokenUserMessage,
+)
 import logging
 import datetime
 from streamlit_feedback import streamlit_feedback # Importez le composant
@@ -43,6 +49,26 @@ def get_mistral_client():
 def get_query_classifier():
     logging.info("Initialisation du classificateur de requêtes...")
     return QueryClassifier()
+
+# Met en cache le tokenizer pour le comptage des tokens (si nécessaire pour la gestion des limites de tokens)
+@st.cache_resource
+def get_tokenizer():
+    return MistralTokenizer.v3()
+
+def count_prompt_tokens(system_prompt: str, user_prompt: str) -> int:
+
+    tokenizer = get_tokenizer()
+
+    request = ChatCompletionRequest(
+        messages=[
+            TokenSystemMessage(content=system_prompt),
+            TokenUserMessage(content=user_prompt)
+        ]
+    )
+
+    encoded = tokenizer.encode_chat_completion(request)
+
+    return len(encoded.tokens)
 
 # Titre principal
 st.title(f"📚 {APP_TITLE}")
@@ -261,6 +287,11 @@ N'inventez pas d'informations sur {COMMUNE_NAME}.
             user_message = UserMessage(content=prompt)
             system_message = SystemMessage(content=system_prompt)
             messages_for_api = [system_message, user_message]
+
+            # 2bis. Comptage des tokens pour information avant appel à l'API
+            nb_tokens = count_prompt_tokens(system_prompt, prompt)
+            logging.info(f"Nombre de tokens du prompt : {nb_tokens}")
+            st.caption(f"📊 Tokens du prompt : {nb_tokens:,}")
 
             # 3. Appel à l'API Mistral Chat
             logging.info(f"Appel de l'API Mistral Chat avec le modèle {selected_model}...")

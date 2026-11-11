@@ -11,3 +11,5 @@ requests==2.34.2
 streamlit-feedback==0.1.4
 SQLAlchemy==2.1.8
 plotly==7.1.0
+mistral-common==1.13.1
+sentencepiece==0.2.3
